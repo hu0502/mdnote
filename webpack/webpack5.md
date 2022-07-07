@@ -1,5 +1,3 @@
-[Toc]
-
 # 基础
 ## 前言
 ### 为什么需要打包工具
@@ -140,6 +138,113 @@ module.exports = {
 
 ## 处理样式资源
 使用`webpack`处理`CSS`、`Less`、`Sass`、`Scss`等样式资源。
+
+### 处理CSS资源
+#### 1. 安装
+`npm i css-loader style-loader -D`
+
+#### 2. 功能介绍
++ `css-loader` ：负责将CSS文件编译成`webpack`能识别的模块；
++ `style-loader`：动态创建一个style标签，里面放置`webpack`中CSS模块内容。
+
+此时样式会以style标签的形式在页面上生效。
+
+#### 3. 配置
+```js
+ module:{
+    rules:[
+        {
+            test: /\.css$/, 
+            use: [ 'style-loader', 'css-loader' ]//执行顺序：从右到左，从下到上
+        }
+    ]
+},
+```
+
+### 处理Less资源
+
+#### 1. 安装
+`npm i less-loader -D`
+
+#### 2. 功能介绍
++ `less-loader` ：负责将Less文件编译成CSS文件。
+
+#### 3. 配置
+```js
+ module:{
+    rules:[
+        {
+            test: /\.less$/,
+            use: ["style-loader","css-loader","less-loader"]
+        },
+    ]
+},
+```
+
+### 处理Sass和Scss资源
+
+#### 1. 安装
+`npm i sass-loader sass -D`
+
+#### 2. 功能介绍
++ `sass-loader` ：负责将Sass文件编译成CSS文件；
++ `sass`：`sass-loader`依赖`sass`进行编译
+
+#### 3. 配置
+```js
+ module:{
+    rules:[
+        {
+            test: /\.s[ac]ss$/,
+            use: [ 'style-loader', 'css-loader','sass-loader' ]
+        },
+    ]
+},
+```
+### 处理Styl资源
+
+#### 1. 安装
+`npm i stylus-loader -D`
+
+#### 2. 功能介绍
++ `stylus-loader` ：负责将Styl文件编译成CSS文件。
+
+#### 3. 配置
+```js
+module:{
+    rules:[
+        {
+            test: /\.s[ac]ss$/,
+            use: [ 'style-loader', 'css-loader','sass-loader' ]
+        },
+    ]
+},
+```
+
+### 处理图片资源
+
+#### 1. 配置
+```js
+rules:[
+    {
+        test: /\.(png|jpe?g|gif|webp|svg)$/,
+        type:"asset",
+        parser:{
+            dataUrlCondition:{
+                //小于10kb的图片转base64
+                //优点：减少请求数量 缺点：体积会更大
+                
+                /**
+                 * 请求数量减少是因为webpack不会将这类文件打包为输出文件，而是打包为相应字符串，放在需要引用的地方，这样就成了本地显示服务器不用发送请求而去拿取资源
+                */
+                maxSize:10 * 1024 //10kb 
+            }
+        }
+    },
+]
+```
+
+
 
 
 
